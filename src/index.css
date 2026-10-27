@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  /* POWIB blue, sampled from the letterhead (#1D9EEF). White text needs 600 or darker (600 = 4.5:1). */
+  --color-brand-50: #eaf6fe;
+  --color-brand-100: #d2ecfd;
+  --color-brand-200: #a6d8fb;
+  --color-brand-300: #6fc0f6;
+  --color-brand-400: #43adf2;
+  --color-brand-500: #1d9eef;
+  --color-brand-600: #0a7bc4;
+  --color-brand-700: #086aad;
+  --color-brand-800: #0b5689;
+  --color-brand-900: #0c4670;
+  /* The letterhead band behind large white text: the same blue, a touch deeper so white headings read (3.1:1). */
+  --color-band: #1a98e8;
+
+  /* POWIB orange: the patterned edge on the letterhead (#FAAA37) and the deep orange of its icons (#E95A21). */
+  --color-sun-50: #fff6e8;
+  --color-sun-100: #fee9c6;
+  --color-sun-300: #fcc77a;
+  --color-sun-400: #faaa37;
+  --color-sun-600: #e95a21;
+
+  /* Ink: headings and text. A dark version of POWIB blue rather than black. */
+  --color-ink-300: #a8bdcc;
+  --color-ink-400: #7e98ab;
+  --color-ink-500: #587489;
+  --color-ink-700: #23475f;
+  --color-ink-800: #163b53;
+  --color-ink-900: #0c3a5c;
+  --color-ink-950: #082b45;
+
+  /* Paper background and the line colour for borders. */
+  --color-paper: #f5f8fa;
+  --color-line: #d6e1e8;
+
+  --animate-fade-up: fade-up 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-pop: pop 0.22s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.96) translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-paper text-ink-800 dark:bg-slate-950 dark:text-slate-100;
+  }
+  h1, h2, h3, h4 {
+    @apply text-ink-900 dark:text-white;
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
+  dialog::backdrop {
+    background: rgb(7 42 61 / 0.55);
+    backdrop-filter: blur(3px);
+  }
+  /* Amounts and dates line up in columns. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .input {
+    @apply min-h-10 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink-800 transition
+      placeholder:text-ink-400 hover:border-brand-400 focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/15
+      dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100;
+  }
+  input[type="file"].input {
+    @apply p-1.5 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-brand-50 file:px-3 file:py-1.5 file:text-sm
+      file:font-medium file:text-brand-700 hover:file:bg-brand-100 dark:file:bg-brand-900/50 dark:file:text-brand-200;
+  }
+  input[type="date"].input {
+    @apply cursor-pointer;
+  }
+
+  /* The dropdown list unfolds from the field it belongs to. */
+  .picker-panel {
+    animation: picker-in 0.16s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  @keyframes picker-in {
+    from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

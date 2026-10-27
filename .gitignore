@@ -1,0 +1,18 @@
+# Dependencies and build output
+node_modules/
+dist/
+
+# Secrets: never commit real keys (.env.example is the safe template)
+.env
+.env.*
+!.env.example
+
+# Local tool settings
+.vercel/
+.claude/
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
