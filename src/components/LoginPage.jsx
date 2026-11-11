@@ -55,11 +55,11 @@ function waitText(ms) {
 const EMAIL = /^[^\s@]{1,64}@[^\s@]+\.[^\s@]{2,}$/;
 
 export default function LoginPage() {
-  const { signIn, signUp, resetPassword } = useAuth();
+  const { signIn, signUp, resetPassword, idleSignedOut } = useAuth();
   const [mode, setMode] = useState("in");
   const [f, setF] = useState({ name: "", email: "", password: "" });
   const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState(null);
+  const [msg, setMsg] = useState(() => (idleSignedOut ? { text: "You were signed out after 30 minutes without activity. Sign in again to continue." } : null));
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
 
   async function submit(e) {
@@ -83,7 +83,7 @@ export default function LoginPage() {
     }
     if (mode === "reset" && !error) writeLocal(GUARD, { ...g, resetAt: Date.now() + 60000 });
     if (error) return setMsg({ bad: true, text: MSG[error.message] || error.message });
-    if (mode === "up" && !data.session) setMsg({ text: "Account created. Check your email to confirm it, then sign in." });
+    if (mode === "up" && !data.session) setMsg({ text: "Account created. Open the link we emailed you to confirm your address. HR will then approve your account." });
     if (mode === "reset") setMsg({ text: "If that email has an account, a reset link is on its way." });
   }
 
